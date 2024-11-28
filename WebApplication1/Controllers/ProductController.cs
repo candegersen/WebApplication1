@@ -45,9 +45,43 @@ namespace WebApplication1.Controllers
 
         };
 
+        [HttpGet]
+        public IActionResult Product()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Product (Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Product");
+            }
+
+            return View(product);
+        }
         public IActionResult Index()
         {
             return View(products); 
+        }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Add(Product newProduct)
+        {
+            if (ModelState.IsValid)
+            {
+                newProduct.Id = products.Max(p => p.Id) + 1;
+                products.Add(newProduct);
+                return RedirectToAction("Index");   
+            }
+            return View(newProduct);
         }
     }
 }
